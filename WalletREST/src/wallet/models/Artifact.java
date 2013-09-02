@@ -71,4 +71,13 @@ public abstract class Artifact {
 		return artifactId + " " + merchantName + " " + ownerWalletId;
 	}
 	
+	@Override
+	public boolean equals(Object o){
+		if(o instanceof Artifact){
+			return artifactId.equals(((Artifact)o).getArtifactId());
+		} else if(o instanceof SharedArtifact){
+			return artifactId.equals(((SharedArtifact)o).getId());
+		}
+		return false;
+	}
 }

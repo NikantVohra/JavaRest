@@ -63,12 +63,13 @@ public class Wallet implements Shareable<Wallet>{
 	public Wallet share(Wallet shareWith, Artifact artifactToShare, ShareProperties prop) {
 		if(!contains(artifactToShare) || shareWith.contains(artifactToShare))
 			return null;
-		
+//		System.out.println(shareWith.contains(artifactToShare));
 		if(artifactToShare.isShareable()){
 			if(!prop.isAllowedSharing()){
 				artifactToShare.setShareable(false);
 			}
 			SharedArtifact sharedArtifact = new SharedArtifact(artifactToShare, prop);
+			System.out.println("sharing ");
 			shareWith.add(sharedArtifact);
 			return shareWith;
 		}

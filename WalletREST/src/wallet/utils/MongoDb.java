@@ -2,12 +2,12 @@ package wallet.utils;
 
 import java.net.UnknownHostException;
 
-import wallet.dao.CouponDAO;
+import wallet.dao.WalletDAO;
 
 public class MongoDb {
 	public static void main(String[] args) throws UnknownHostException	{
-		CouponDAO cdao = DAOFactory.createCouponDAO();
-		System.out.println(Utils.ObjToJSON(cdao.findbyId("CP33819220")));
+		WalletDAO wdao = DAOFactory.createWalletDAO();
+		System.out.println(Utils.ObjToJSON(wdao.getOwnedArtifactsAsJSON(78710944)));
 	}
 
 }

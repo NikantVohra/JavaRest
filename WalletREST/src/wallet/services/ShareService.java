@@ -48,9 +48,9 @@ public class ShareService {
         		status= sdao.share(emailIdFrom, userEmails, artifactId, prop);
         	}
         	if(status)
-        		return Utils.buildResponse("{'Success'}");
+        		return Utils.buildResponse("{'status' : 'Success'}");
         	else
-        		return Utils.buildResponse("{'Failure'}");	
+        		return Utils.buildResponse("{'status' :'Failure'}");	
 		}
 		
         @Path("{artifactId}")

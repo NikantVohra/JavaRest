@@ -54,12 +54,12 @@ public class Utils {
 	}
 	
 	public static String ObjToJSON(Object[] obj){
-		String JSON = "{";
+		String JSON = "[";
 		for(int i = 0; i < obj.length; i++){
 			JSON += ObjToJSON(obj[i]);
 			if(i!=obj.length-1) JSON += ",";
 		}
-		return JSON + "}";
+		return JSON + "]";
 	}
 	
 	public static Integer[] toIntArray(String s){
@@ -75,7 +75,7 @@ public class Utils {
 		ResponseBuilder builder = Response.ok(resp);
    	 	builder.header("Access-Control-Allow-Origin", "*");
         builder.header("Access-Control-Max-Age", "3600");
-        builder.header("Access-Control-Allow-Methods", "GET");
+//        builder.header("Access-Control-Allow-Methods", "POST");
         builder.header("Access-Control-Allow-Headers", "X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin");
         return builder.build();
 	}

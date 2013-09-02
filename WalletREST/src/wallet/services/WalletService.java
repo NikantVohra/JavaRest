@@ -45,7 +45,7 @@ public class WalletService {
 		UserDAO udao = DAOFactory.createUserDAO();
 		User U = udao.findByEmailId(emailId);
 		WalletDAO wdao = DAOFactory.createWalletDAO();
-		return Utils.buildResponse(wdao.getOwnedArtifactsAsJSON(U.getWalletId()));
+		return Utils.buildResponse("{ \"owned\": "+ wdao.getOwnedArtifactsAsJSON(U.getWalletId()) + "}");
 	}
 
 	@Path("{emailId}/shared")
@@ -55,18 +55,18 @@ public class WalletService {
 		UserDAO udao = DAOFactory.createUserDAO();
 		User U = udao.findByEmailId(emailId);
 		WalletDAO wdao = DAOFactory.createWalletDAO();
-		return Utils.buildResponse(wdao.getSharedArtifactsAsJSON(U.getWalletId()));
+		return Utils.buildResponse("{ \"shared\": "+wdao.getSharedArtifactsAsJSON(U.getWalletId()) + "}");
 	}
 
 	@Path("{emailId}/{category}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getOwned(@PathParam("emailId") String emailId,
+	public Response getByCategory(@PathParam("emailId") String emailId,
 			@PathParam("category") String category) {
 		UserDAO udao = DAOFactory.createUserDAO();
 		User U = udao.findByEmailId(emailId);
 		WalletDAO wdao = DAOFactory.createWalletDAO();
-		return Utils.buildResponse(wdao.getArtifactByCategoryAsJSON(U.getWalletId(), category));
+		return Utils.buildResponse("{ \""+category+"\":"+wdao.getArtifactByCategoryAsJSON(U.getWalletId(), category)+"}");
 	}
 
 }
