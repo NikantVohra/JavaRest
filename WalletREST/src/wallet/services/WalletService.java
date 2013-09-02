@@ -7,6 +7,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import wallet.dao.UserDAO;
@@ -29,43 +30,43 @@ public class WalletService {
 	@Path("{emailid}")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String getWallet(@PathParam("emailid") String emailId) {
+	public Response getWallet(@PathParam("emailid") String emailId) {
 		UserDAO udao = DAOFactory.createUserDAO();
 		User U = udao.findByEmailId(emailId);
 		WalletDAO wdao = DAOFactory.createWalletDAO();
 		Wallet w = wdao.findbyId(U.getWalletId());
-		return Utils.ObjToJSON(w);
+		return Utils.buildResponse(Utils.ObjToJSON(w));
 	}
 
 	@Path("{emailid}/owned")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getOwned(@PathParam("emailid") String emailId) {
+	public Response getOwned(@PathParam("emailid") String emailId) {
 		UserDAO udao = DAOFactory.createUserDAO();
 		User U = udao.findByEmailId(emailId);
 		WalletDAO wdao = DAOFactory.createWalletDAO();
-		return wdao.getOwnedArtifactsAsJSON(U.getWalletId());
+		return Utils.buildResponse(wdao.getOwnedArtifactsAsJSON(U.getWalletId()));
 	}
 
 	@Path("{emailId}/shared")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getShared(@PathParam("emailId") String emailId) {
+	public Response getShared(@PathParam("emailId") String emailId) {
 		UserDAO udao = DAOFactory.createUserDAO();
 		User U = udao.findByEmailId(emailId);
 		WalletDAO wdao = DAOFactory.createWalletDAO();
-		return wdao.getSharedArtifactsAsJSON(U.getWalletId());
+		return Utils.buildResponse(wdao.getSharedArtifactsAsJSON(U.getWalletId()));
 	}
 
 	@Path("{emailId}/{category}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getOwned(@PathParam("emailId") String emailId,
+	public Response getOwned(@PathParam("emailId") String emailId,
 			@PathParam("category") String category) {
 		UserDAO udao = DAOFactory.createUserDAO();
 		User U = udao.findByEmailId(emailId);
 		WalletDAO wdao = DAOFactory.createWalletDAO();
-		return wdao.getArtifactByCategoryAsJSON(U.getWalletId(), category);
+		return Utils.buildResponse(wdao.getArtifactByCategoryAsJSON(U.getWalletId(), category));
 	}
 
 }

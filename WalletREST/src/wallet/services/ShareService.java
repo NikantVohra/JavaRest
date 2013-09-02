@@ -9,6 +9,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import wallet.dao.ShareDAO;
@@ -30,7 +31,7 @@ public class ShareService {
         @Path("{artifactId}")
 		@POST
         @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-		public String share(
+		public Response share(
 				@FormParam("from") String emailIdFrom,
 				@FormParam("with") String emailIdTo,
 				@PathParam("artifactId") String artifactId,
@@ -47,16 +48,24 @@ public class ShareService {
         		status= sdao.share(emailIdFrom, userEmails, artifactId, prop);
         	}
         	if(status)
-        		return "{'Success'}";
+        		return Utils.buildResponse("{'Success'}");
         	else
-        		return "{'Failure'}";	
+        		return Utils.buildResponse("{'Failure'}");	
 		}
 		
         @Path("{artifactId}")
 		@GET
-		public String sharedWith(@PathParam("artifactId") String artifactId){
+		public Response sharedWith(@PathParam("artifactId") String artifactId){
 			ShareDAO sdao = DAOFactory.createShareDAO();
-			return Utils.ObjToJSON(sdao.getSharedWith(artifactId));
+			return Utils.buildResponse(Utils.ObjToJSON(sdao.getSharedWith(artifactId)));
 		}
+        
+        @Path("new/{emailID}")
+        @GET
+        public Response newShares(@PathParam("emailID") String emailID){
+        	ShareDAO sdao = DAOFactory.createShareDAO();
+        	String resp = Utils.ObjToJSON(sdao.newShares(emailID));
+        	return Utils.buildResponse(resp);
+        }
 }
 																						

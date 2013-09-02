@@ -10,6 +10,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import wallet.dao.UserDAO;
@@ -31,20 +32,20 @@ public class UserService {
          @Path("wallet/{emailid}")
          @GET
          @Produces({MediaType.APPLICATION_JSON})
-         public String getWallet(@PathParam("emailid") String UserName) {
+         public Response getWallet(@PathParam("emailid") String UserName) {
         	 UserDAO udao = DAOFactory.createUserDAO();
-        	 return udao.getWalletasJSON(UserName);
+        	 return Utils.buildResponse(udao.getWalletasJSON(UserName));
          }
          
         @Path("add")
 		@POST
         @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-		public String createUser(
+		public Response createUser(
 				@FormParam("name") String name,
 				@FormParam("email") String emailId
 		) {
         	UserDAO udao = DAOFactory.createUserDAO();
-        	return Utils.ObjToJSON(udao.createUser(name, emailId));
+        	return Utils.buildResponse(Utils.ObjToJSON(udao.createUser(name, emailId)));
 		}            
 }
 																						

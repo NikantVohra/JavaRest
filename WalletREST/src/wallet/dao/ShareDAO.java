@@ -13,6 +13,10 @@ import wallet.utils.Utils;
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Morphia;
 import com.google.code.morphia.dao.BasicDAO;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 
 
@@ -64,5 +68,18 @@ public class ShareDAO extends BasicDAO<Share, String>{
 			sharedWith.add(s.getShareWith());
 		}
 		return sharedWith.toArray();
+	}
+	
+	public Object[] newShares(String emailID){
+		List<Share> shared = ds.find(Share.class, "shareWith ==", emailID).asList();
+		ArrayList<Share> newSharesList = new ArrayList<Share>();
+		for(Share s: shared){
+			if(s.isNewShare()){
+				newSharesList.add(s);
+				s.setNewShare(false);
+				ds.save(s);
+			}
+		}
+		return newSharesList.toArray();
 	}
 }

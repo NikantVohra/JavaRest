@@ -2,6 +2,9 @@ package wallet.utils;
 import java.io.IOException;
 import java.util.Random;
 
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
+
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -68,5 +71,12 @@ public class Utils {
     	return iArray;
 	}
 	
-	
+	public static Response buildResponse(String resp){
+		ResponseBuilder builder = Response.ok(resp);
+   	 	builder.header("Access-Control-Allow-Origin", "*");
+        builder.header("Access-Control-Max-Age", "3600");
+        builder.header("Access-Control-Allow-Methods", "GET");
+        builder.header("Access-Control-Allow-Headers", "X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin");
+        return builder.build();
+	}
 }

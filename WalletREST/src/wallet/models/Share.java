@@ -16,6 +16,7 @@ public class Share {
 	private String toShare;
 	private String sharedAt;
 	private ShareProperties prop;
+	private boolean newShare;
 	
 	public Share(){
 		
@@ -27,6 +28,7 @@ public class Share {
 		this.toShare = toShare;
 		this.prop = prop;
 		this.sharedAt = new Date().toString();
+		this.newShare = true;
 	}
 
 	public String getShareFrom() {
@@ -47,6 +49,14 @@ public class Share {
 
 	public ShareProperties getProp() {
 		return prop;
+	}
+
+	public boolean isNewShare() {
+		return newShare;
+	}
+
+	public void setNewShare(boolean newShare) {
+		this.newShare = newShare;
 	}
 
 }

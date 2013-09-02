@@ -10,6 +10,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import wallet.dao.GiftCardDAO;
@@ -31,17 +32,17 @@ public class GiftCardService {
 	@Path("{artifactId}")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String get(@PathParam("artifactId") String artifactId) {
+	public Response get(@PathParam("artifactId") String artifactId) {
 		System.out.println(artifactId);
 		GiftCardDAO cdao = DAOFactory.createGiftCardDAO();
 		System.out.println(Utils.ObjToJSON(cdao.findbyId(artifactId)));
-		return Utils.ObjToJSON(cdao.findbyId(artifactId));
+		return Utils.buildResponse(Utils.ObjToJSON(cdao.findbyId(artifactId)));
 	}
 
 	@Path("add/{emailId}")
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public String add(@PathParam("emailId") String emailId,
+	public Response add(@PathParam("emailId") String emailId,
 			@FormParam("merchant") String merchant,
 			@FormParam("cardnumber") String cardNumber,
 			@FormParam("amount") Double amount,
@@ -49,7 +50,7 @@ public class GiftCardService {
 		UserDAO udao = DAOFactory.createUserDAO();
 		User U = udao.findByEmailId(emailId);
 		GiftCardDAO cdao = DAOFactory.createGiftCardDAO();
-		return Utils.ObjToJSON(cdao.add(U.getWalletId(), merchant, cardNumber,
-				amount, validity));
+		return Utils.buildResponse(Utils.ObjToJSON(cdao.add(U.getWalletId(), merchant, cardNumber,
+				amount, validity)));
 	}
 }
