@@ -12,7 +12,7 @@ public abstract class Artifact {
 	protected String artifactId;
 	private String merchantName;
 	private String description;
-	private Integer ownerWalletId;
+	private String owner;
 	private String dateAdded;
 	private boolean shareable;
 	
@@ -20,17 +20,17 @@ public abstract class Artifact {
 		
 	}
 	
-	public Artifact(Integer ownerWalletId, String merchantName, String description, boolean shareable){
+	public Artifact(String owner, String merchantName, String description, boolean shareable){
 		this.merchantName = merchantName;
 		this.description = description;
-		this.ownerWalletId = ownerWalletId;
+		this.owner = owner;
 		dateAdded = new Date().toString();
 		this.shareable = shareable;
 	}
 	
-	public Artifact(Integer ownerWalletId, String merchantName, boolean shareable){
+	public Artifact(String owner, String merchantName, boolean shareable){
 		this.merchantName = merchantName;
-		this.ownerWalletId = ownerWalletId;
+		this.owner = owner;
 		dateAdded = new Date().toString();
 		this.shareable = shareable;
 	}
@@ -43,8 +43,8 @@ public abstract class Artifact {
 		return merchantName;
 	}
 	
-	public Integer getOwnerWalletId() {
-		return ownerWalletId;
+	public String getOwner() {
+		return owner;
 	}
 	
 	public String getDateAdded() {
@@ -68,7 +68,7 @@ public abstract class Artifact {
 	}
 	
 	public String toString(){
-		return artifactId + " " + merchantName + " " + ownerWalletId;
+		return artifactId + " " + merchantName + " " + owner;
 	}
 	
 	@Override

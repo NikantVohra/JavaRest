@@ -20,8 +20,8 @@ public class GiftCard extends Artifact{
 		super();
 	}
 	
-	public GiftCard(Integer ownerWalletId, String merchantName, String cardNumber, Double amount, String validity, boolean shareable) {
-		super(ownerWalletId, merchantName, shareable);
+	public GiftCard(String owner, String merchantName, String cardNumber, Double amount, String validity, boolean shareable) {
+		super(owner, merchantName, shareable);
 		this.cardNumber = cardNumber;
 		this.artifactId = "GC" + Utils.generateId();
 		this.amount = amount;
@@ -33,8 +33,8 @@ public class GiftCard extends Artifact{
 		}
 	}
 	
-	public GiftCard(Integer ownerWalletId, String merchantName, String description, String cardNumber, Double amount, String validity, boolean shareable) {
-		super(ownerWalletId, merchantName, description, shareable);
+	public GiftCard(String owner, String merchantName, String description, String cardNumber, Double amount, String validity, boolean shareable) {
+		super(owner, merchantName, description, shareable);
 		this.cardNumber = cardNumber;
 		this.artifactId = "GC" + Utils.generateId();
 		this.amount = amount;

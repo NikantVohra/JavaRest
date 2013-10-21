@@ -4,6 +4,7 @@ import wallet.dao.BusinessCardDAO;
 import wallet.dao.CouponDAO;
 import wallet.dao.GiftCardDAO;
 import wallet.dao.LoyaltyCardDAO;
+import wallet.dao.OfferDAO;
 import wallet.dao.ReceiptDAO;
 import wallet.dao.ShareDAO;
 import wallet.dao.UserDAO;
@@ -17,6 +18,9 @@ public class DAOFactory {
 	}
 	public static CouponDAO createCouponDAO(){
         return new CouponDAO(db.getMongo(), db.getMorphia(), "Artifacts");
+	}
+	public static OfferDAO createOfferDAO(){
+        return new OfferDAO(db.getMongo(), db.getMorphia(), "Artifacts");
 	}
 	public static BusinessCardDAO createBusinessCardDAO(){
         return new BusinessCardDAO(db.getMongo(), db.getMorphia(), "Artifacts");

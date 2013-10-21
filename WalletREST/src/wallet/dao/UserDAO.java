@@ -25,11 +25,11 @@ public class UserDAO extends BasicDAO<User, String> {
 	public User findByWalletId(Integer walletId){
 	    return ds.find(User.class,"walletId ==",walletId).get();	
 	}
-	
-	public Integer createUser(String name,String emailId){
+
+	public Integer createUser(String name,String emailId,Double balance){
 		Wallet W = new Wallet();
 		DBAccess.getDataStore("Wallets").save(W);
-		User U = new User(name,emailId,W.getWalletId());
+		User U = new User(name,emailId,W.getWalletId(),balance);
 		ds.save(U);	
 		return W.getWalletId();
 	}
@@ -39,6 +39,15 @@ public class UserDAO extends BasicDAO<User, String> {
 		WalletDAO wdao = DAOFactory.createWalletDAO();
 		Wallet w = wdao.findbyId(U.getWalletId());
 		return Utils.ObjToJSON(w);
+	}
+
+	public boolean addToFeed(String emailId, String[] feedArray) {
+		User U = findByEmailId(emailId);
+		for(String s : feedArray){
+			U.addToFeed(s);
+		}
+		ds.save(U);
+		return true;
 	}
 
 }

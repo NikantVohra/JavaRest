@@ -3,6 +3,7 @@ import java.util.List;
 
 import wallet.models.Artifact;
 import wallet.models.Receipt;
+import wallet.models.User;
 import wallet.models.Wallet;
 import wallet.utils.DAOFactory;
 
@@ -23,11 +24,13 @@ public class ReceiptDAO extends BasicDAO<Artifact, String>{
 	public Receipt findbyId(String id){
 	    return ds.find(Receipt.class,"artifactId ==",id).get();	
 	}
-	public String add(Integer owner, String merchantName, String receiptNumber,Double amount,String receiptDated){
+	public String add(String owner, String merchantName, String receiptNumber,Double amount,String receiptDated){
+		UserDAO udao = DAOFactory.createUserDAO();
+		User user = udao.findByEmailId(owner);
 		Receipt C = new Receipt(owner,merchantName,receiptNumber,amount,receiptDated,true);
 		ds.save(C);
 		WalletDAO wdao = DAOFactory.createWalletDAO();
-		Wallet w = wdao.findbyId(owner);
+		Wallet w = wdao.findbyId(user.getWalletId());
 		w.add(C);
 		wdao.saveToDB(w);
 		return C.getArtifactId();

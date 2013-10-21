@@ -6,6 +6,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
@@ -30,6 +31,7 @@ public class ShareService {
          // Return the list of orders for applications with json or xml formats
         @Path("{artifactId}")
 		@POST
+        @Produces({MediaType.APPLICATION_JSON})
         @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 		public Response share(
 				@FormParam("from") String emailIdFrom,
@@ -48,9 +50,9 @@ public class ShareService {
         		status= sdao.share(emailIdFrom, userEmails, artifactId, prop);
         	}
         	if(status)
-        		return Utils.buildResponse("{'status' : 'Success'}");
+        		return Utils.buildResponse("{\"status\" : \"Success\"}");
         	else
-        		return Utils.buildResponse("{'status' :'Failure'}");	
+        		return Utils.buildResponse("{\"status\" :\"Failure\"}");	
 		}
 		
         @Path("{artifactId}")

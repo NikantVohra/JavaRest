@@ -19,8 +19,8 @@ public class Receipt extends Artifact{
 	public Receipt(){
 		super();
 	}
-	public Receipt(Integer ownerWalletId, String merchantName, String description, String receiptNumber, Double amount, String receiptDated, boolean shareable) {
-		super(ownerWalletId, merchantName, description, shareable);
+	public Receipt(String owner, String merchantName, String description, String receiptNumber, Double amount, String receiptDated, boolean shareable) {
+		super(owner, merchantName, description, shareable);
 		this.amount = amount;
 		this.artifactId = "RP" + Utils.generateId();
 		this.receiptNumber = receiptNumber;
@@ -32,8 +32,8 @@ public class Receipt extends Artifact{
 		}
 	}
 
-	public Receipt(Integer ownerWalletId, String merchantName,String receiptNumber, Double amount, String receiptDated, boolean shareable) {
-		super(ownerWalletId, merchantName, shareable);
+	public Receipt(String owner, String merchantName,String receiptNumber, Double amount, String receiptDated, boolean shareable) {
+		super(owner, merchantName, shareable);
 		this.amount = amount;
 		this.artifactId = "RP" + Utils.generateId();
 		this.receiptNumber = receiptNumber;

@@ -3,6 +3,7 @@ import java.util.List;
 
 import wallet.models.Artifact;
 import wallet.models.LoyaltyCard;
+import wallet.models.User;
 import wallet.models.Wallet;
 import wallet.utils.DAOFactory;
 
@@ -23,14 +24,16 @@ public class LoyaltyCardDAO extends BasicDAO<Artifact, String> {
 	public LoyaltyCard findbyId(String id){
 	    return ds.find(LoyaltyCard.class,"artifactId ==",id).get();	
 	}
-	public String add(Integer owner, String merchantName, String cardNumber){
+	public String add(String owner, String merchantName, String cardNumber){
+		UserDAO udao = DAOFactory.createUserDAO();
+		User user = udao.findByEmailId(owner);
 		LoyaltyCard C = new LoyaltyCard(owner,merchantName,cardNumber,true);
 		ds.save(C);
 		WalletDAO wdao = DAOFactory.createWalletDAO();
-		Wallet w = wdao.findbyId(owner);
+		Wallet w = wdao.findbyId(user.getWalletId());
 		w.add(C);
 		wdao.saveToDB(w);
 		return C.getArtifactId();
-	}
+	} 
 	
 }

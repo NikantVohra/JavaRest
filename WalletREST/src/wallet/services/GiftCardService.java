@@ -14,8 +14,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import wallet.dao.GiftCardDAO;
-import wallet.dao.UserDAO;
-import wallet.models.User;
 import wallet.utils.DAOFactory;
 import wallet.utils.Utils;
 
@@ -42,15 +40,15 @@ public class GiftCardService {
 	@Path("add/{emailId}")
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Produces({ MediaType.APPLICATION_JSON })
+
 	public Response add(@PathParam("emailId") String emailId,
 			@FormParam("merchant") String merchant,
 			@FormParam("cardnumber") String cardNumber,
 			@FormParam("amount") Double amount,
 			@FormParam("validity") String validity) {
-		UserDAO udao = DAOFactory.createUserDAO();
-		User U = udao.findByEmailId(emailId);
 		GiftCardDAO cdao = DAOFactory.createGiftCardDAO();
-		return Utils.buildResponse(Utils.ObjToJSON(cdao.add(U.getWalletId(), merchant, cardNumber,
-				amount, validity)));
+		return Utils.buildResponse("{\"GiftCardId\" : \""+cdao.add(emailId, merchant, cardNumber,
+				amount, validity)+"\"}");
 	}
 }

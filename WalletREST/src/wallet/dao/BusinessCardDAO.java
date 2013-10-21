@@ -3,6 +3,7 @@ import java.util.List;
 
 import wallet.models.Artifact;
 import wallet.models.BusinessCard;
+import wallet.models.User;
 import wallet.models.Wallet;
 import wallet.utils.DAOFactory;
 
@@ -23,11 +24,13 @@ public class BusinessCardDAO extends BasicDAO<Artifact, String> {
 	public BusinessCard findbyId(String id){
 	    return ds.find(BusinessCard.class,"artifactId ==",id).get();	
 	}
-	public String add(Integer owner, String merchantName,String name ,String[] numbers,String[] emailIds){
+	public String add(String owner, String merchantName,String name ,String[] numbers,String[] emailIds){
 		BusinessCard B = new BusinessCard(owner,merchantName,name,numbers,emailIds,true);
 		ds.save(B);
+		UserDAO udao = DAOFactory.createUserDAO();
+		User user = udao.findByEmailId(owner);
 		WalletDAO wdao = DAOFactory.createWalletDAO();
-		Wallet w = wdao.findbyId(owner);
+		Wallet w = wdao.findbyId(user.getWalletId());
 		w.add(B);
 		wdao.saveToDB(w);
 		return B.getArtifactId();

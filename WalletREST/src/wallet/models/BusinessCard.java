@@ -12,16 +12,16 @@ public class BusinessCard extends Artifact {
 		super();
 	}
 	
-	public BusinessCard(Integer ownerWalletId, String merchantName, String name, String[] numbers, String[] emails, boolean shareable) {
-		super(ownerWalletId, merchantName, shareable);
+	public BusinessCard(String owner, String merchantName, String name, String[] numbers, String[] emails, boolean shareable) {
+		super(owner, merchantName, shareable);
 		this.artifactId = "BC" + Utils.generateId();
 		this.name = name;
 		this.numbers = numbers;
 		this.emails = emails;
 	}
 
-	public BusinessCard(Integer ownerWalletId, String merchantName, String description, String name, String[] numbers, String[] emails, boolean shareable) {
-		super(ownerWalletId, merchantName, description, shareable);
+	public BusinessCard(String owner, String merchantName, String description, String name, String[] numbers, String[] emails, boolean shareable) {
+		super(owner, merchantName, description, shareable);
 		this.artifactId = "BC" + Utils.generateId();
 		this.name = name;
 		this.numbers = numbers;

@@ -36,16 +36,60 @@ public class UserService {
         	 UserDAO udao = DAOFactory.createUserDAO();
         	 return Utils.buildResponse(udao.getWalletasJSON(UserName));
          }
+         @Path("wallet/name/{emailid}")
+         @GET
+         @Produces({MediaType.APPLICATION_JSON})
+         public Response getname(@PathParam("emailid") String emailId) {
+        	 UserDAO udao = DAOFactory.createUserDAO();
+        	 return Utils.buildResponse("{ \"name\" : \"" + udao.findByEmailId(emailId).getName() + "\"}");
+         }
+         
+         @Path("wallet/balance/{emailid}")
+         @GET
+         @Produces({MediaType.APPLICATION_JSON})
+         public Response getBalance(@PathParam("emailid") String emailId) {
+        	 UserDAO udao = DAOFactory.createUserDAO();
+        	 return Utils.buildResponse("{ \"balance\" : \"" + udao.findByEmailId(emailId).getBalance() + "\"}");
+         }
+         
+         @Path("{emailid}")
+         @GET
+         @Produces({MediaType.APPLICATION_JSON})
+         public Response getWalletFeed(@PathParam("emailid") String emailId) {
+        	 UserDAO udao = DAOFactory.createUserDAO();
+        	 return Utils.buildResponse(Utils.ObjToJSON(udao.findByEmailId(emailId)));
+         }
          
         @Path("add")
 		@POST
         @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 		public Response createUser(
 				@FormParam("name") String name,
-				@FormParam("email") String emailId
+				@FormParam("email") String emailId,
+				@FormParam("balance") Double balance
+
 		) {
         	UserDAO udao = DAOFactory.createUserDAO();
-        	return Utils.buildResponse(Utils.ObjToJSON(udao.createUser(name, emailId)));
-		}            
+        	System.out.println(balance);
+        	return Utils.buildResponse(Utils.ObjToJSON(udao.createUser(name, emailId,balance)));
+		}
+        @Path("feed/{emailid}")
+		@POST
+        @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+        @Produces({MediaType.APPLICATION_JSON})
+
+		public Response addToFeed(
+				@PathParam("emailid") String emailId,
+				@FormParam("feed") String feed
+
+		) {
+			String[] feedArray = feed.split(";");
+        	UserDAO udao = DAOFactory.createUserDAO();
+        	if(udao.addToFeed(emailId,feedArray))
+        		return Utils.buildResponse("{\"status\" : \"Success\"}");
+        	else
+        		return Utils.buildResponse("{\"status\" :\"Failure\"}");	
+        		
+		}
 }
 																						

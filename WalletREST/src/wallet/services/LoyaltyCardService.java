@@ -14,8 +14,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import wallet.dao.LoyaltyCardDAO;
-import wallet.dao.UserDAO;
-import wallet.models.User;
 import wallet.utils.DAOFactory;
 import wallet.utils.Utils;
 
@@ -41,15 +39,14 @@ public class LoyaltyCardService {
 
 	@Path("add/{emailId}")
 	@POST
+	@Produces({ MediaType.APPLICATION_JSON })
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Response add(@PathParam("emailId") String emailId,
 			@FormParam("merchant") String merchant,
 			@FormParam("cardnumber") String cardNumber
 
 	) {
-		UserDAO udao = DAOFactory.createUserDAO();
-		User U = udao.findByEmailId(emailId);
 		LoyaltyCardDAO cdao = DAOFactory.createLoyaltyCardDAO();
-		return Utils.buildResponse(Utils.ObjToJSON(cdao.add(U.getWalletId(), merchant, cardNumber)));
+		return Utils.buildResponse("{\"LoyaltyCardId\" : \""+cdao.add(emailId, merchant, cardNumber)+"\"}");
 	}
 }

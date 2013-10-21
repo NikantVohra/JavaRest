@@ -14,8 +14,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import wallet.dao.ReceiptDAO;
-import wallet.dao.UserDAO;
-import wallet.models.User;
 import wallet.utils.DAOFactory;
 import wallet.utils.Utils;
 
@@ -38,18 +36,20 @@ public class ReceiptService {
 		System.out.println(Utils.ObjToJSON(cdao.findbyId(artifactId)));
 		return Utils.buildResponse(Utils.ObjToJSON(cdao.findbyId(artifactId)));
 	}
+	
+	
 
 	@Path("add/{emailId}")
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Produces({ MediaType.APPLICATION_JSON })
+	
 	public Response add(@PathParam("emailId") String emailId,
 			@FormParam("merchant") String merchant,
 			@FormParam("number") String receiptnumber,
 			@FormParam("amount") Double amount,
 			@FormParam("dated") String receiptdated) {
-		UserDAO udao = DAOFactory.createUserDAO();
-		User U = udao.findByEmailId(emailId);
 		ReceiptDAO cdao = DAOFactory.createReceiptDAO();
-		return Utils.buildResponse(Utils.ObjToJSON(cdao.add(U.getWalletId(), merchant, receiptnumber, amount, receiptdated)));
+		return Utils.buildResponse("{\"ReceiptId\" : \""+cdao.add(emailId, merchant, receiptnumber, amount, receiptdated)+"\"}");
 	}
 }

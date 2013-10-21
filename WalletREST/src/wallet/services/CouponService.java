@@ -14,8 +14,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import wallet.dao.CouponDAO;
-import wallet.dao.UserDAO;
-import wallet.models.User;
 import wallet.utils.DAOFactory;
 import wallet.utils.Utils;
 
@@ -42,15 +40,14 @@ public class CouponService {
 	@Path("add/{emailId}")
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response add(@PathParam("emailId") String emailId,
 			@FormParam("merchant") String merchant,
 			@FormParam("couponcode") String couponCode,
 			@FormParam("offer") String offerPercentage,
 			@FormParam("validity") String validity) {
-		UserDAO udao = DAOFactory.createUserDAO();
-		User U = udao.findByEmailId(emailId);
 		CouponDAO cdao = DAOFactory.createCouponDAO();
-		return Utils.buildResponse(Utils.ObjToJSON(cdao.add(U.getWalletId(), merchant, couponCode,
-				offerPercentage, validity)));
+		return Utils.buildResponse("{\"CouponId\" : \"" + (cdao.add(emailId, merchant, couponCode,
+				offerPercentage, validity))+"\" }");
 	}
 }

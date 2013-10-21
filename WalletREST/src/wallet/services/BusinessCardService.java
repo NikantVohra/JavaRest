@@ -14,8 +14,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import wallet.dao.BusinessCardDAO;
-import wallet.dao.UserDAO;
-import wallet.models.User;
 import wallet.utils.DAOFactory;
 import wallet.utils.Utils;
 
@@ -42,15 +40,15 @@ public class BusinessCardService {
 	@Path("add/{emailId}")
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Produces({ MediaType.APPLICATION_JSON })
+
 	public Response add(@PathParam("emailId") String emailId,
 			@FormParam("merchant") String merchant,
 			@FormParam("name") String name,
 			@FormParam("numbers") String numbers,
 			@FormParam("emailids") String emailIds) {
-		UserDAO udao = DAOFactory.createUserDAO();
-		User U = udao.findByEmailId(emailId);
 		BusinessCardDAO cdao = DAOFactory.createBusinessCardDAO();
-		return Utils.buildResponse(Utils.ObjToJSON(cdao.add(U.getWalletId(), merchant, name,
-				numbers.split(";"), emailIds.split(";"))));
+		return Utils.buildResponse("{\"BusinessCardId\" : \"" +cdao.add(emailId, merchant, name,
+				numbers.split(";"), emailIds.split(";"))+"\"}");
 	}
 }

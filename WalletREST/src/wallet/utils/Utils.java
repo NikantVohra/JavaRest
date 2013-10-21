@@ -24,6 +24,8 @@ public class Utils {
 			case "GC" : return "wallet.models.GiftCard";
 			case "LC" : return "wallet.models.LoyaltyCard";
 			case "RP" : return "wallet.models.Receipt";
+			case "OF" : return "wallet.models.Offer";
+
 			default : return null;
 		}
 	}
