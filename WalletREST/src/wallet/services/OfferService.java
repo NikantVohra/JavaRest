@@ -18,7 +18,7 @@ import wallet.utils.DAOFactory;
 import wallet.utils.Utils;
 
 //maps this resource to the URL orders
-@Path("/offer")
+@Path("offer")
 public class OfferService {
 
 	// Allows to insert contextual objects into the class
@@ -57,7 +57,7 @@ public class OfferService {
 			@FormParam("enddate") String endDate){
 		OfferDAO odao = DAOFactory.createOfferDAO();
 		System.out.println("here");
-		return Utils.buildResponse("{\"CouponId\" : \"" + (odao.add(id, emailId, merchant, description, campaignCode, 
+		return Utils.buildResponse("{\"OfferId\" : \"" + (odao.add(id, emailId, merchant, description, campaignCode, 
 				countryCode, currency, title, imageUrl, termsAndConditions, status, amount, startDate, endDate))+"\" }");
 	}
 }
