@@ -55,7 +55,7 @@ public class WalletService {
 		UserDAO udao = DAOFactory.createUserDAO();
 		User U = udao.findByEmailId(emailId);
 		WalletDAO wdao = DAOFactory.createWalletDAO();
-		return Utils.buildResponse("{ \"shared\": "+wdao.getSharedArtifactsAsJSON(U.getWalletId()) + "}");
+		return Utils.buildResponse("{ \"shared\": "+wdao.getAllSharedArtifactsAsJSON(U.getWalletId()) + "}");
 	}
 
 	@Path("{emailId}/{category}")

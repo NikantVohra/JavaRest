@@ -1,4 +1,5 @@
 package wallet.dao;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,62 +20,71 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 
-
-public class ShareDAO extends BasicDAO<Share, String>{
+public class ShareDAO extends BasicDAO<Share, String> {
 
 	public ShareDAO(Mongo mongo, Morphia morphia, String dbName) {
 		super(mongo, morphia, dbName);
 	}
-	
-	public boolean share(String shareFrom,String shareWith, String artifactToShare, ShareProperties prop){
+
+	public boolean share(String shareFrom, String shareWith,
+			String artifactToShare, ShareProperties prop) {
 		UserDAO udao = DAOFactory.createUserDAO();
 		WalletDAO wdao = DAOFactory.createWalletDAO();
-		Wallet from = wdao.findbyId(udao.findByEmailId(shareFrom).getWalletId());
-		Wallet with = wdao.findbyId(udao.findByEmailId(shareWith).getWalletId());
-		Wallet updated;
-		String category = Utils.getClassName(artifactToShare);
-		Datastore artifactDS = DBAccess.getDataStore("Artifacts");
-		Class categoryClass;
-		try {
-			categoryClass = Class.forName(category);
-		    Artifact toShare = (Artifact)artifactDS.find(categoryClass,"artifactId ==",artifactToShare).get();
-			updated = from.share(with, toShare, prop);
-			if(updated != null)
-				wdao.saveToDB(updated);
-			else
-				return false;
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+		if ((udao.findByEmailId(shareWith)) != null) {
+			Wallet from = wdao.findbyId(udao.findByEmailId(shareFrom)
+					.getWalletId());
+			Wallet with = wdao.findbyId(udao.findByEmailId(shareWith)
+					.getWalletId());
+			Wallet updated;
+			String category = Utils.getClassName(artifactToShare);
+			Datastore artifactDS = DBAccess.getDataStore("Artifacts");
+			Class categoryClass;
+			try {
+				categoryClass = Class.forName(category);
+				Artifact toShare = (Artifact) artifactDS.find(categoryClass,
+						"artifactId ==", artifactToShare).get();
+				updated = from.share(with, toShare, prop);
+				if (updated != null)
+					wdao.saveToDB(updated);
+				else
+					return false;
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+			ds.save(new Share(shareFrom,shareWith,artifactToShare,prop));
+			return true;
 		}
-		
-		ds.save(new Share(shareFrom,shareWith,artifactToShare,prop));
-		return true;
+		return false;
+
 	}
-	
-	public boolean share(String shareFrom,String[] shareWith, String artifactToShare, ShareProperties prop){
+
+	public boolean share(String shareFrom, String[] shareWith,
+			String artifactToShare, ShareProperties prop) {
 		boolean status = true;
-		for(int i = 0; i < shareWith.length; i++){
-			if(!share(shareFrom, shareWith[i], artifactToShare, prop)){
+		for (int i = 0; i < shareWith.length; i++) {
+			if (!share(shareFrom, shareWith[i], artifactToShare, prop)) {
 				status = false;
 			}
 		}
 		return status;
 	}
-	
-	public Object[] getSharedWith(String artifactId){
-		List<Share> shared = ds.find(Share.class, "toShare ==", artifactId).asList();
+
+	public Object[] getSharedWith(String artifactId) {
+		List<Share> shared = ds.find(Share.class, "toShare ==", artifactId)
+				.asList();
 		ArrayList<String> sharedWith = new ArrayList<String>();
-		for(Share s: shared){
+		for (Share s : shared) {
 			sharedWith.add(s.getShareWith());
 		}
 		return sharedWith.toArray();
 	}
-	
-	public Object[] newShares(String emailID){
-		List<Share> shared = ds.find(Share.class, "shareWith ==", emailID).asList();
+
+	public Object[] newShares(String emailID) {
+		List<Share> shared = ds.find(Share.class, "shareWith ==", emailID)
+				.asList();
 		ArrayList<Share> newSharesList = new ArrayList<Share>();
-		for(Share s: shared){
-			if(s.isNewShare()){
+		for (Share s : shared) {
+			if (s.isNewShare()) {
 				newSharesList.add(s);
 				s.setNewShare(false);
 				ds.save(s);

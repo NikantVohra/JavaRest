@@ -46,7 +46,9 @@ public abstract class Artifact {
 	public String getOwner() {
 		return owner;
 	}
-	
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
 	public String getDateAdded() {
 		return dateAdded;
 	}

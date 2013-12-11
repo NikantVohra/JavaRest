@@ -26,12 +26,16 @@ public class UserDAO extends BasicDAO<User, String> {
 	    return ds.find(User.class,"walletId ==",walletId).get();	
 	}
 
-	public Integer createUser(String name,String emailId,Double balance){
-		Wallet W = new Wallet();
-		DBAccess.getDataStore("Wallets").save(W);
-		User U = new User(name,emailId,W.getWalletId(),balance);
-		ds.save(U);	
-		return W.getWalletId();
+	public boolean createUser(String name,String emailId,Double balance){
+		
+		if(findByEmailId(emailId) == null){
+			Wallet W = new Wallet();
+			DBAccess.getDataStore("Wallets").save(W);
+			User U = new User(name,emailId,W.getWalletId(),balance);
+			ds.save(U);	
+			return true;
+		}	
+		return false;
 	}
 	
 	public String getWalletasJSON(String emailId){

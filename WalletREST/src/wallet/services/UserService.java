@@ -63,6 +63,7 @@ public class UserService {
         @Path("add")
 		@POST
         @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+        
 		public Response createUser(
 				@FormParam("name") String name,
 				@FormParam("email") String emailId,
@@ -70,8 +71,10 @@ public class UserService {
 
 		) {
         	UserDAO udao = DAOFactory.createUserDAO();
-        	System.out.println(balance);
-        	return Utils.buildResponse(Utils.ObjToJSON(udao.createUser(name, emailId,balance)));
+        	if(udao.createUser(name, emailId, balance))
+        		return Utils.buildResponse("{\"status\" : \"Success\"}");
+        	else
+        		return Utils.buildResponse("{\"status\" :\"Failure\"}");		
 		}
         @Path("feed/{emailid}")
 		@POST

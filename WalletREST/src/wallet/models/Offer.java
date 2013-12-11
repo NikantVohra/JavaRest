@@ -33,6 +33,7 @@ public class Offer extends Artifact {
     private String status;
     private double amount;
     private String startDate;
+    private String merchantId;
     private String endDate;
 /*    private String redeemLimit;
  	private List<String> stores;
@@ -49,11 +50,12 @@ public class Offer extends Artifact {
 	public Offer(){
 		super();
 	}
-	public Offer(String id,String owner, String merchantName, String description,boolean shareable,String campaignCode,
+	public Offer(String id,String owner, String merchantName, String merchantId,String description,boolean shareable,String campaignCode,
 		String countryCode,String currency, String title,String imageUrl,String termsAndConditions,
 		String status,double amount,String startDate,String endDate){
 		super(owner, merchantName, description, shareable);	
 		this.artifactId = "OF" + id;
+		this.merchantId = merchantId;
 		this.campaignCode = campaignCode;
 		this.countryCode = countryCode;
 		this.currency = currency;
@@ -177,6 +179,12 @@ public class Offer extends Artifact {
     public void setEndDate(String end_date) {
         this.endDate = end_date;
     }
+	public String getMerchantId() {
+		return merchantId;
+	}
+	public void setMerchantId(String merchantId) {
+		this.merchantId = merchantId;
+	}
 
     
  /*   public double getAmountIssued() {
